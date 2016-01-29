@@ -1,0 +1,18 @@
+{
+    "contents" : "rankall <- function(outcome, num = \"best\") {\n        hd<-read.csv(\"hospital-data.csv\", na.strings=\"Not Available\",stringsAsFactors=FALSE)\n        ## Read outcome data\n        oocm<-read.csv(\"outcome-of-care-measures.csv\",\n                       na.strings=\"Not Available\",stringsAsFactors=FALSE)\n        ##11 - heart attack\n        ##17 - heart failure\n        ##23 - pneumonia\n\n        if (outcome == \"heart attack\") {\n                col_num <- 11\n        } else if (outcome == \"heart failure\") {\n                col_num <- 17\n        }else if (outcome == \"pneumonia\") {\n                col_num <- 23\n        }        \n        \n        ## Check that outcome is valid\n        true_outcomes <- c(\"heart attack\", \"heart failure\", \"pneumonia\")\n        if (!outcome %in% true_outcomes) {\n                stop(\"invalid outcome\")\n        } else {\n                pre_data<-oocm[c(2,7,col_num)] ## table for parameter\n                \n                ## NA removing\n                data <- pre_data[complete.cases(pre_data[,3]), ]\n                \n                ## Ordering data\n                data.ordered <- data[order(data[,2],data[,3] ,data$Hospital.Name), ]\n                \n                ##Splitting data by State (list of dataFrames!)\n                data.splitted <- split(data.ordered, data.ordered$State)\n                \n                ##Function that returns hospital name\n                hospitalNameFunction <-function(state_data, num) {\n                        if (num == \"best\") {\n                                state_data$Hospital.Name[1]\n                        } else if (num == \"worst\") {\n                                state_data$Hospital.Name[length(state_data[,3])]\n                        } else if (is.numeric(num)) {\n                                state_data$Hospital.Name[num]\n                        }            \n                }\n                \n                result <- sapply(data.splitted, hospitalNameFunction, num)\n                data.frame(hospital = result, state = names(result), row.names = names(result))\n        }\n}",
+    "created" : 1454089179424.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4042020020",
+    "id" : "B73FD6D0",
+    "lastKnownWriteTime" : 1454090011,
+    "path" : "~/R/Assignment3-data/rankall.R",
+    "project_path" : "rankall.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

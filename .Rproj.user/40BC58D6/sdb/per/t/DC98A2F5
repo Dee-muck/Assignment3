@@ -1,0 +1,18 @@
+{
+    "contents" : "setwd(\"/Users/Dimak/R/Assignment3-data\")\nhd<-read.csv(\"hospital-data.csv\", na.strings=\"Not Available\",\n             stringsAsFactors=FALSE )\n\nbest <- function(state, outcome) {\n        ## Read outcome data\n        oocm<-read.csv(\"outcome-of-care-measures.csv\",\n                       na.strings=\"Not Available\",stringsAsFactors=FALSE)\n        \n        ##11 - heart attack\n        ##17 - heart failure\n        ##23 - pneumonia\n        if (outcome == \"heart attack\") {\n                col_num <- 11\n        }\n        else if (outcome == \"heart failure\") {\n                col_num <- 17\n        }\n        else if (outcome == \"pneumonia\") {\n                col_num <- 23\n        }\n        \n        \n        ## Check that state and outcome are valid\n        true_outcomes <- c(\"heart attack\", \"heart failure\", \"pneumonia\")\n        if (!state %in% oocm$State) {\n                stop(\"invalid state\")\n        } else if(!outcome %in% true_outcomes) {\n                stop(\"invalid outcome\")\n        } else {\n                state_data<-oocm[oocm[,7]==state,] ## table for particular st\n                \n                state_list <- state_data[, col_num] ## list for parameter\n                min <- min(state_list, na.rm=TRUE)\n                min_index <- which(state_list == min)\n                hospital_name <- state_data[min_index, 2]\n                sorted_hospital<-sort(hospital_name)\n                sorted_hospital\n        ## Return hospital name in that state with lowest 30-day death rate \n        }\n        \n      \n       \n}",
+    "created" : 1453972441206.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "54269967",
+    "id" : "DC98A2F5",
+    "lastKnownWriteTime" : 1453992602,
+    "path" : "~/R/Assignment3-data/best.R",
+    "project_path" : "best.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

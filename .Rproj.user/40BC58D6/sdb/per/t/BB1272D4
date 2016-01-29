@@ -1,0 +1,18 @@
+{
+    "contents" : "hd<-read.csv(\"hospital-data.csv\", na.strings=\"Not Available\",\n             stringsAsFactors=FALSE )\nrankhospital <- function(state, outcome, num = \"best\") {\n        \n        ## Read outcome data\n        oocm<-read.csv(\"outcome-of-care-measures.csv\",\n                       na.strings=\"Not Available\",stringsAsFactors=FALSE)\n        \n        ##11 - heart attack\n        ##17 - heart failure\n        ##23 - pneumonia\n        \n        if (outcome == \"heart attack\") {\n                col_num <- 11\n        }\n        else if (outcome == \"heart failure\") {\n                col_num <- 17\n        }\n        else if (outcome == \"pneumonia\") {\n                col_num <- 23\n        }\n        ## Check that state and outcome are valid\n        true_outcomes <- c(\"heart attack\", \"heart failure\", \"pneumonia\")\n        if (!state %in% oocm$State) {\n                stop(\"invalid state\")\n        } else if(!outcome %in% true_outcomes) {\n                stop(\"invalid outcome\")\n        } else {\n                \n                state_data<-oocm[oocm[,7]==state,] ## table for particular st\n                state_data2<-state_data[c(2,col_num)] ## table for parameter\n                \n                ## NA removing\n                data <- state_data2[complete.cases(state_data2[, 2]), ]\n                \n                ##Check if num is greater than nrows of Data \n                if (is.numeric(num) == TRUE) {\n                        if (length(data[,2]) < num) {\n                                return(NA)\n                        }\n                }\n                \n                ##Order data\n                data.state <- data[order(data[,2], data$Hospital.Name), ]\n                \n        }\n        \n        ## setting num\n        if (num==\"best\"){\n                num <- 1\n        } else if (num==\"worst\") {\n                num <- length(data[,2])\n        }\n        \n        hospitalName <- data.state$Hospital.Name[num]\n        hospitalName\n}",
+    "created" : 1453996764355.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "506069129",
+    "id" : "BB1272D4",
+    "lastKnownWriteTime" : 1454008416,
+    "path" : "~/R/Assignment3-data/rankhospital.R",
+    "project_path" : "rankhospital.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
